@@ -7,22 +7,24 @@ def new_human(a: Man | Woman, b: Man | Woman, sex='male', first_name='Иван')
         print('Давай таким не будем заниматься')
         return None
     else:
-        second_name = a.second_name if a.sex == 'male' else b.second_name
+        last_name = a.last_name if a.sex == 'male' else b.last_name
         if sex == 'male':
-            return Man(first_name, second_name, 0)
+            return Man(first_name, last_name, 0)
         else:
-            return Woman(first_name, second_name, 0)
+            return Woman(first_name, last_name, 0)
 
 
 def main():
-    a = Man('Иван', 'Иванов', 20)
+    a = Man('Иван', 'Иванов', 20, money=0)
     print(a)
     b = Woman('Ирина', 'Петрова', 18)
     print(b)
 
     a.work()
-    b.shoping()
-    a.fishing()
+    print(a)
+
+    print(b.shoping())
+    print(a.fishing())
     print(a)
     print(b)
 

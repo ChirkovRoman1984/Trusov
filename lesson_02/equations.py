@@ -1,44 +1,42 @@
 import math
 
 
-def line_equation(a, b):
+def line_equation(a, b) -> float | None:
     if a == 0:
         if b == 0:
-            print('Бесконечное количество решений')
+            return float('inf')
         else:
-            print('Нет решения')
+            return None
     else:
-        x = -b / a
-        print(f'{x = }')
+        return float(-b / a)
 
 
-def square_equation(a, b, c):
+def square_equation(a, b, c) -> tuple[float | None, float | None]:
     discriminant = b**2 - 4 * a * c
 
     if discriminant > 0:
         x1 = (-b + discriminant ** 0.5) / (2 * a)
         x2 = (-b - discriminant ** 0.5) / (2 * a)
-        print(f'{x1 = }\n{x2 = }')
+        return x1, x2
     elif discriminant == 0:
         x = -b / (2 * a)
-        print(f'{x = }')
+        return x, None
     else:
-        print('Корней нет')
+        return None, None
 
 
-def cube_equation(a, b, c, d):
+def cube_equation(a, b, c, d) -> tuple[float | None, float | None, float | None]:
     p = (3 * a * c - b**2) / (3 * a**2)
     q = (2 * b**3 - 9 * a * b * c + 27 * a**2 * d) / (27 * a**3)
 
     if p == 0 and q == 0:
-        x1 = -b / (3 * a)
-        print(f'Один корень:\n{x1 = :.2}')
+        return -b / (3 * a), None, None
     else:
         discriminant = q ** 2 / 4 + p ** 3 / 27
         if discriminant == 0:
             x1 = 2 * math.cbrt(-q / 2) - b / (3 * a)
             x2 = - math.cbrt(-q / 2) - b / (3 * a)
-            print(f'Два корня:\n{x1 = :.2}\n{x2 = :.2}')
+            return x1, x2, None
         else:
             if discriminant < 0:
                 if q < 0:
@@ -59,4 +57,4 @@ def cube_equation(a, b, c, d):
             x1 = y1 - b / (3 * a)
             x2 = y2 - b / (3 * a)
             x3 = y3 - b / (3 * a)
-            print(f'{x1 = :.2}\n{x2 = :.2}\n{x3 = :.2}')
+            return x1, x2, x3

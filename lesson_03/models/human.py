@@ -1,11 +1,11 @@
 class Human:
-    def __init__(self, first_name, second_name, age):
+    def __init__(self, first_name, last_name, age, happiness=50, stamina=100, money=1_000):
         self._first_name = first_name
-        self._second_name = second_name
+        self._last_name = last_name
         self.age = age
-        self.happiness = 50
-        self.stamina = 100
-        self.money = 1_000
+        self.happiness = happiness
+        self.stamina = stamina
+        self.money = money
 
     def eat(self):
         self.stamina += 10
@@ -18,15 +18,15 @@ class Human:
         print(f'{self.full_name} поработал')
 
     @property
-    def second_name(self):
-        return self._second_name
+    def last_name(self):
+        return self._last_name
 
     @property
     def full_name(self):
-        return f'{self._first_name} {self._second_name}'
+        return f'{self._first_name} {self._last_name}'
 
     def __str__(self):
         return (
-            f'{self._first_name} {self._second_name}, {self.age} лет:\n'
+            f'{self._first_name} {self._last_name}, {self.age} лет:\n'
             f'Счастье: {self.happiness}, Здоровье: {self.stamina}, Деньги: {self.money}\n'
         )
