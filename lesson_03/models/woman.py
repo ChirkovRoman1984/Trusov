@@ -9,15 +9,16 @@ class Woman(Human):
         self.sex = 'female'
 
     def shoping(self) -> str:
-        if self.money <= 0:
-            message = f'{self.full_name} не может ничего купить, у нее нет денег!'
-            return message
-        self.happiness += random.randint(-5, 5)
-        if self.happiness < 0:
-            self.happiness = 0
-        self.money -= random.randint(1, 500)
-        if self.money < 0:
-            self.money = 0
-            message = f'{self.full_name} потратила все деньги на шоппинге!'
-            return message
-        return f'{self.full_name} сходила на шоппинг'
+        if self.money == 0:
+            return f'{self.full_name} не может ничего купить, у нее нет денег!'
+        random_happiness = random.randint(-5, 5)
+        self.happiness = 0 if self.happiness + random_happiness < 0 else self.happiness + random_happiness
+        random_money = random.randint(1, 500)
+        self.money = 0 if self.money - random_money < 0 else self.money - random_money
+        if self.money == 0 and self.happiness == 0:
+            return f'{self.full_name} потратила все деньги и абсолютно несчастна!'
+        elif self.money == 0:
+            return f'{self.full_name} потратила все деньги на шоппинге!'
+        elif self.happiness == 0:
+            return f'{self.full_name} несчастна после шоппинга'
+        return f'{self.full_name} успешно сходила на шоппинг'

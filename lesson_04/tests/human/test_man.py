@@ -2,36 +2,41 @@ import pytest
 
 
 class TestMan:
-    def test_identity(self, humans):
-        expected_dima = {
-            '_first_name': 'Дима',
-            '_last_name': 'Сидоров',
-            'age': 25,
-            'happiness': 20,
-            'stamina': 10,
-            'money': 0,
-            'sex': 'male'
-        }
-        expected_vasya = {
-            '_first_name': 'Вася',
-            '_last_name': 'Синегубов',
-            'age': 35,
-            'happiness': 50,
-            'stamina': 100,
-            'money': 1000,
-            'sex': 'male'
-        }
-        assert humans['dima'].__dict__ == expected_dima
-        assert humans['vasya'].__dict__ == expected_vasya
-
-    @pytest.mark.parametrize('money, stamina, expected', [
-        (1000, 100,  'Дима Сидоров успешно порыбачил'),
-        (0, 100,  'Дима Сидоров не может порыбачить, потому что у него нет денег'),
-        (0, 0,  'Дима Сидоров не может порыбачить, потому что у него нет сил'),
-        (1000, 0,  'Дима Сидоров не может порыбачить, потому что у него нет сил'),
-    ])
-    def test_fishing(self, money, stamina, expected, humans):
+    def test_initialization(self, humans):
         dima = humans['dima']
-        dima.money = money
-        dima.stamina = stamina
-        assert dima.fishing() == expected
+        assert dima.first_name == "Дима"
+        assert dima.last_name == "Сидоров"
+        assert dima.age == 25
+        assert dima.happiness == 20
+        assert dima.stamina == 10
+        assert dima.money == 0
+        assert dima.sex == 'male'
+
+    def test_fishing(self, humans):
+        dima = humans['dima']
+        dima.money = 1000
+        assert dima.fishing() == 'Дима Сидоров успешно порыбачил'
+        assert dima.happiness == 21
+        assert dima.stamina == 9
+
+        dima.stamina = 1
+        assert dima.fishing() == 'Дима Сидоров порыбачил и потратил на это все силы'
+        assert dima.stamina == 0
+        assert dima.happiness == 22
+
+        assert dima.fishing() == 'Дима Сидоров не может порыбачить, потому что у него нет сил'
+        assert dima.stamina == 0
+        assert dima.happiness == 22
+
+        dima.money = 1
+        dima.stamina = 1
+        assert dima.fishing() == 'Дима Сидоров порыбачил, но потратил все силы и деньги!'
+        assert dima.stamina == 0
+        assert dima.money == 0
+        assert dima.happiness == 23
+
+        dima.stamina = 1
+        assert dima.fishing() == 'Дима Сидоров не может порыбачить, потому что у него нет денег'
+        assert dima.stamina == 1
+        assert dima.money == 0
+        assert dima.happiness == 23

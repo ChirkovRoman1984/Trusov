@@ -4,29 +4,39 @@ from lesson_02.equations import line_equation, square_equation, cube_equation
 
 
 class TestEquations:
-    @pytest.mark.parametrize('a, b, expected', [
-        (0, 0, float('inf')),
-        (0, 1, None),
-        (1, -1, 1),
-        (100, -1, 0.01)
-    ])
-    def test_linear_equation(self, a, b, expected):
-        assert line_equation(a, b) == expected
+    def test_line_equation(self):
+        assert line_equation(1, 0) == 0.0
+        assert line_equation(1, -2) == 2.0
+        assert line_equation(0, 0) == float('inf')
+        assert line_equation(0, 5) is None
 
-    @pytest.mark.parametrize('a, b, c, expected', [
-        (8, 0, 5, (None, None)),
-        (-4, 28, -49, (3.5, None)),
-        (1, 0, 0, (0, None)),
-        (6, 0, -54, (3.0, -3.0)),
-        (1, -1, 0, (1.0, 0)),
-    ])
-    def test_lsquare_equation(self, a, b, c, expected):
-        assert square_equation(a, b, c) == expected
+        with pytest.raises(TypeError):
+            line_equation("a", 5)
+        with pytest.raises(TypeError):
+            line_equation(5, "b")
 
-    @pytest.mark.parametrize('a, b, c, d, expected', [
-        (8, -36, 54, -27, (1.5, None, None)),
-        (8, 12, 6, 1, (-0.5, None, None)),
-        (5, -8, -8, 5, (2.1306623862918075, -0.9999999999999999, 0.4693376137081928)),
-    ])
-    def test_cube_equation(self, a, b, c, d, expected):
-        assert cube_equation(a, b, c, d) == expected
+    def test_square_equation(self):
+        assert square_equation(1, -3, 2) == (2.0, 1.0)
+        assert square_equation(1, 2, 1) == (-1.0, None)  # Один корень
+        assert square_equation(1, 0, -4) == (2.0, -2.0)  # Два корня
+        assert square_equation(1, 0, 1) == (None, None)  # Нет корней
+
+        with pytest.raises(ValueError):
+            square_equation(0, 1, 1)
+        with pytest.raises(TypeError):
+            square_equation(1, "b", 1)
+
+    def test_cube_equation(self):
+        assert cube_equation(1, -6, 11, -6) == pytest.approx((3.0, 1.0, 2.0))
+        assert cube_equation(1, 0, 0, 0) == (0.0, None, None)
+        assert cube_equation(1, 0, 0, -1) == pytest.approx((1.0, -0.5 + 0.866025j, -0.5 - 0.866025j))
+        assert cube_equation(1, 0, 0, 1) == pytest.approx((-1.0, 0.5 + 0.866025j, 0.5 - 0.866025j))
+        assert cube_equation(10, 10, 10, 10) == pytest.approx((-1.0, 0 + 1j, 0 - 1j))
+        assert cube_equation(10, 5, 5, 5) == pytest.approx(
+            (-0.738983, 0.1194918 + 0.813834j, 0.1194918 - 0.813834j)
+        )
+
+        with pytest.raises(ValueError):
+            cube_equation(0, 1, 1, 1)
+        with pytest.raises(TypeError):
+            cube_equation(1, 1, "c", 1)
